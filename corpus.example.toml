@@ -1,0 +1,27 @@
+# Corpus configuration example.
+# Copy to corpus.toml and edit. Corpus reads env vars at runtime;
+# this file documents all available options for reference.
+
+[server]
+host = "0.0.0.0"
+port = 8000
+db_path = "corpus.db"
+log_level = "INFO"
+
+[auth]
+enabled = false
+api_key = ""   # set via CORPUS_API_KEY env var in production
+
+[rate_limit]
+enabled = false
+rps = 100  # requests per second per IP
+
+[policy]
+mode = "GUARDIAN"   # OBSERVER | ADVISOR | GUARDIAN
+
+[trust]
+# Per-product trust levels: UNTRUSTED | LOW | MEDIUM | HIGH | TRUSTED
+anvil = "HIGH"
+inspectra = "HIGH"
+ci = "MEDIUM"
+graphify = "MEDIUM"

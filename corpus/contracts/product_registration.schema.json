@@ -1,0 +1,77 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://corpus.dev/schemas/product_registration.json",
+  "title": "ProductRegistration",
+  "description": "Registration record for a product connecting to the Corpus runtime.",
+  "type": "object",
+  "required": ["name", "version"],
+  "properties": {
+    "product_id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique product identifier (UUID v4, assigned by Corpus on registration)."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable product name (e.g. 'Anvil', 'Inspectra')."
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the product (e.g. '1.2.3')."
+    },
+    "description": {
+      "type": ["string", "null"]
+    },
+    "capabilities": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "EMIT_SIGNALS",
+          "RECEIVE_SIGNALS",
+          "INTERRUPT",
+          "BE_INTERRUPTED",
+          "AUDIT",
+          "VALIDATE",
+          "LEARN",
+          "ORCHESTRATE"
+        ]
+      },
+      "default": []
+    },
+    "endpoint": {
+      "type": ["string", "null"],
+      "format": "uri",
+      "description": "HTTP base URL for REST signal delivery."
+    },
+    "websocket_endpoint": {
+      "type": ["string", "null"],
+      "description": "WebSocket endpoint for real-time signal streaming."
+    },
+    "heartbeat_interval": {
+      "type": "integer",
+      "minimum": 5,
+      "default": 30,
+      "description": "Seconds between heartbeat pings."
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ACTIVE", "INACTIVE", "DEGRADED", "UNKNOWN"],
+      "default": "ACTIVE"
+    },
+    "registered_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "last_seen": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "default": {}
+    }
+  }
+}

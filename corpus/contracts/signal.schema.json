@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://corpus.dev/schemas/signal.json",
+  "title": "Signal",
+  "description": "A structured communication unit emitted between intelligent systems via Corpus.",
+  "type": "object",
+  "required": ["type", "severity", "source_product"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid",
+      "description": "Unique signal identifier (UUID v4)."
+    },
+    "type": {
+      "type": "string",
+      "enum": ["INFORM", "CONSULT", "INTERRUPT", "BLOCK", "VALIDATE", "LEARN", "ESCALATE"],
+      "description": "Signal intent — governs routing and gravity weight."
+    },
+    "severity": {
+      "type": "string",
+      "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"],
+      "description": "Urgency level of the signal."
+    },
+    "source_product": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Registered product ID emitting this signal."
+    },
+    "target_product": {
+      "type": ["string", "null"],
+      "description": "Destination product ID. Null when metadata.broadcast is true."
+    },
+    "payload": {
+      "type": "object",
+      "description": "Signal-specific data (schema varies by type).",
+      "additionalProperties": true
+    },
+    "metadata": {
+      "$ref": "#/$defs/SignalMetadata"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING", "DELIVERED", "ACKNOWLEDGED", "EXPIRED", "FAILED"],
+      "default": "PENDING"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC emission time."
+    },
+    "correlation_id": {
+      "type": ["string", "null"],
+      "description": "Links this signal to a group of related signals."
+    },
+    "parent_signal_id": {
+      "type": ["string", "null"],
+      "description": "Parent signal ID for chained/derived signals."
+    },
+    "ttl": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "Seconds until this signal expires. Null = never expires."
+    }
+  },
+  "$defs": {
+    "SignalMetadata": {
+      "title": "SignalMetadata",
+      "type": "object",
+      "properties": {
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "context": {
+          "type": "object",
+          "additionalProperties": true,
+          "default": {}
+        },
+        "retry_count": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "requires_ack": {
+          "type": "boolean",
+          "default": false
+        },
+        "broadcast": {
+          "type": "boolean",
+          "default": false,
+          "description": "When true, target_product must be null."
+        }
+      }
+    }
+  }
+}

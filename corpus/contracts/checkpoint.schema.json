@@ -1,0 +1,92 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://corpus.dev/schemas/checkpoint.json",
+  "title": "Checkpoint",
+  "description": "A synchronisation point where a product pauses and requests clearance from Corpus.",
+  "type": "object",
+  "required": ["checkpoint_type", "product_id"],
+  "properties": {
+    "checkpoint_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "checkpoint_type": {
+      "type": "string",
+      "enum": [
+        "PRE_ANALYSIS",
+        "PRE_EXECUTION",
+        "PRE_COMMIT",
+        "PRE_RELEASE",
+        "POST_EXECUTION",
+        "CUSTOM"
+      ]
+    },
+    "product_id": {
+      "type": "string",
+      "description": "Product requesting clearance."
+    },
+    "context": {
+      "$ref": "#/$defs/CheckpointContext"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["PENDING", "EVALUATING", "CLEARED", "BLOCKED", "DELAYED", "EXPIRED"],
+      "default": "PENDING"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evaluated_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "cleared_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "blocking_signal_ids": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "decision_id": {
+      "type": ["string", "null"],
+      "format": "uuid"
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "default": {}
+    }
+  },
+  "$defs": {
+    "CheckpointContext": {
+      "title": "CheckpointContext",
+      "type": "object",
+      "properties": {
+        "module": { "type": ["string", "null"] },
+        "file_paths": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "operation": { "type": ["string", "null"] },
+        "risk_indicators": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "extra": {
+          "type": "object",
+          "additionalProperties": true,
+          "default": {}
+        }
+      }
+    }
+  }
+}

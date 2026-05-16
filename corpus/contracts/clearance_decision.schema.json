@@ -1,0 +1,86 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://corpus.dev/schemas/clearance_decision.json",
+  "title": "ClearanceDecision",
+  "description": "Corpus's authoritative answer to a Checkpoint — immutable once issued.",
+  "type": "object",
+  "required": ["checkpoint_id", "decision", "reason"],
+  "properties": {
+    "decision_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "checkpoint_id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "decision": {
+      "type": "string",
+      "enum": ["ALLOW", "WARN", "DELAY", "BLOCK", "ESCALATE", "REROUTE"]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1
+    },
+    "authority": {
+      "type": "string",
+      "enum": ["CORPUS", "POLICY_ENGINE", "HUMAN", "PRODUCT"],
+      "default": "CORPUS"
+    },
+    "evidence": {
+      "$ref": "#/$defs/DecisionEvidence"
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "delay_seconds": {
+      "type": ["integer", "null"],
+      "minimum": 1,
+      "description": "Populated when decision == DELAY."
+    },
+    "reroute_target": {
+      "type": ["string", "null"],
+      "description": "Target product_id populated when decision == REROUTE."
+    },
+    "metadata": {
+      "type": "object",
+      "additionalProperties": true,
+      "default": {}
+    }
+  },
+  "$defs": {
+    "DecisionEvidence": {
+      "title": "DecisionEvidence",
+      "type": "object",
+      "properties": {
+        "signal_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "episode_ids": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "rules_applied": {
+          "type": "array",
+          "items": { "type": "string" },
+          "default": []
+        },
+        "risk_score": {
+          "type": ["number", "null"],
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "default": 1.0
+        }
+      }
+    }
+  }
+}

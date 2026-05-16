@@ -1,0 +1,167 @@
+[
+  {
+    "id": "11111111-0000-0000-0000-000000000001",
+    "type": "INFORM",
+    "severity": "LOW",
+    "source_product": "anvil",
+    "target_product": "inspectra",
+    "payload": {
+      "message": "Starting analysis on auth module",
+      "module": "auth",
+      "files": ["auth/login.py", "auth/session.py", "auth/tokens.py"]
+    },
+    "metadata": {
+      "tags": ["auth", "analysis", "scheduled"],
+      "context": { "sprint": "2024-Q2", "ticket": "ANV-441" },
+      "retry_count": 0,
+      "requires_ack": false,
+      "broadcast": false
+    },
+    "status": "PENDING",
+    "timestamp": "2024-05-01T09:00:00Z",
+    "ttl": 300
+  },
+  {
+    "id": "11111111-0000-0000-0000-000000000002",
+    "type": "CONSULT",
+    "severity": "MEDIUM",
+    "source_product": "anvil",
+    "target_product": "inspectra",
+    "payload": {
+      "question": "Is it safe to refactor the session token generation in auth/tokens.py?",
+      "context": {
+        "planned_change": "Replace uuid4 tokens with signed JWTs",
+        "affected_files": ["auth/tokens.py", "auth/middleware.py"]
+      }
+    },
+    "metadata": {
+      "tags": ["auth", "security", "consult"],
+      "context": {},
+      "retry_count": 0,
+      "requires_ack": true,
+      "broadcast": false
+    },
+    "status": "PENDING",
+    "timestamp": "2024-05-01T09:05:00Z",
+    "ttl": 600
+  },
+  {
+    "id": "11111111-0000-0000-0000-000000000003",
+    "type": "INTERRUPT",
+    "severity": "HIGH",
+    "source_product": "inspectra",
+    "target_product": "anvil",
+    "payload": {
+      "reason": "Detected unmitigated SQL injection risk in auth/login.py:47",
+      "risk_level": "HIGH",
+      "location": { "file": "auth/login.py", "line": 47, "function": "authenticate_user" },
+      "recommendation": "Parameterise query before executing. Do not proceed with current implementation."
+    },
+    "metadata": {
+      "tags": ["sql-injection", "auth", "security"],
+      "context": { "audit_id": "INS-7723", "cve_reference": null },
+      "retry_count": 0,
+      "requires_ack": true,
+      "broadcast": false
+    },
+    "status": "PENDING",
+    "timestamp": "2024-05-01T09:06:30Z",
+    "correlation_id": "11111111-0000-0000-0000-000000000002",
+    "ttl": 120
+  },
+  {
+    "id": "11111111-0000-0000-0000-000000000004",
+    "type": "BLOCK",
+    "severity": "CRITICAL",
+    "source_product": "inspectra",
+    "target_product": "anvil",
+    "payload": {
+      "reason": "Hardcoded secret key found in auth/config.py:12. CVSS 9.1.",
+      "risk_level": "CRITICAL",
+      "location": { "file": "auth/config.py", "line": 12 },
+      "evidence": "SECRET_KEY = 'supersecret123'",
+      "required_action": "Rotate secret, move to environment variable, do not commit"
+    },
+    "metadata": {
+      "tags": ["hardcoded-secret", "auth", "critical", "security"],
+      "context": { "audit_id": "INS-7724" },
+      "retry_count": 0,
+      "requires_ack": true,
+      "broadcast": false
+    },
+    "status": "PENDING",
+    "timestamp": "2024-05-01T09:07:00Z",
+    "correlation_id": "11111111-0000-0000-0000-000000000002",
+    "ttl": 60
+  },
+  {
+    "id": "11111111-0000-0000-0000-000000000005",
+    "type": "VALIDATE",
+    "severity": "MEDIUM",
+    "source_product": "anvil",
+    "target_product": "inspectra",
+    "payload": {
+      "artifact_type": "code_diff",
+      "artifact_ref": "pr/anvil/branch/fix-auth-sqli",
+      "validation_scope": ["security", "correctness"],
+      "context": "Proposed fix for SQL injection in authenticate_user"
+    },
+    "metadata": {
+      "tags": ["validation", "pr-review", "auth"],
+      "context": { "pr_id": "ANV-PR-882" },
+      "retry_count": 0,
+      "requires_ack": true,
+      "broadcast": false
+    },
+    "status": "PENDING",
+    "timestamp": "2024-05-01T10:00:00Z",
+    "correlation_id": "11111111-0000-0000-0000-000000000003"
+  },
+  {
+    "id": "11111111-0000-0000-0000-000000000006",
+    "type": "LEARN",
+    "severity": "LOW",
+    "source_product": "inspectra",
+    "target_product": null,
+    "payload": {
+      "pattern": "hardcoded_secret_in_config",
+      "description": "Secret keys defined as string literals in config files, not sourced from env",
+      "files_observed": ["auth/config.py", "services/db_config.py"],
+      "frequency": 3,
+      "suggested_fix": "Use os.environ.get() or a secrets manager"
+    },
+    "metadata": {
+      "tags": ["pattern", "security", "learning"],
+      "context": { "derived_from_audit": "INS-7724" },
+      "retry_count": 0,
+      "requires_ack": false,
+      "broadcast": true
+    },
+    "status": "PENDING",
+    "timestamp": "2024-05-01T10:30:00Z"
+  },
+  {
+    "id": "11111111-0000-0000-0000-000000000007",
+    "type": "ESCALATE",
+    "severity": "CRITICAL",
+    "source_product": "corpus",
+    "target_product": null,
+    "payload": {
+      "reason": "Three CRITICAL security findings unacknowledged for > 10 minutes. Human review required.",
+      "unacked_signal_ids": [
+        "11111111-0000-0000-0000-000000000004"
+      ],
+      "escalation_level": "HUMAN_OVERSIGHT"
+    },
+    "metadata": {
+      "tags": ["escalation", "timeout", "critical"],
+      "context": {},
+      "retry_count": 0,
+      "requires_ack": true,
+      "broadcast": true
+    },
+    "status": "PENDING",
+    "timestamp": "2024-05-01T09:17:00Z",
+    "correlation_id": "11111111-0000-0000-0000-000000000004"
+  }
+]

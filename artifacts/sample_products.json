@@ -1,0 +1,49 @@
+[
+  {
+    "product_id": "aaaaaaaa-0000-0000-0000-000000000001",
+    "name": "Anvil",
+    "version": "0.9.0",
+    "description": "AI development orchestration platform. Plans, executes, and coordinates software engineering tasks.",
+    "capabilities": [
+      "EMIT_SIGNALS",
+      "RECEIVE_SIGNALS",
+      "BE_INTERRUPTED",
+      "VALIDATE"
+    ],
+    "endpoint": "http://localhost:8100",
+    "websocket_endpoint": "ws://localhost:8100/ws/corpus",
+    "heartbeat_interval": 30,
+    "status": "ACTIVE",
+    "registered_at": "2024-05-01T08:00:00Z",
+    "last_seen": "2024-05-01T09:00:00Z",
+    "metadata": {
+      "team": "platform",
+      "environment": "local"
+    }
+  },
+  {
+    "product_id": "bbbbbbbb-0000-0000-0000-000000000002",
+    "name": "Inspectra",
+    "version": "1.2.0",
+    "description": "Autonomous software audit infrastructure. Detects security vulnerabilities, code smells, and compliance violations.",
+    "capabilities": [
+      "EMIT_SIGNALS",
+      "RECEIVE_SIGNALS",
+      "INTERRUPT",
+      "AUDIT",
+      "VALIDATE",
+      "LEARN"
+    ],
+    "endpoint": "http://localhost:8200",
+    "websocket_endpoint": "ws://localhost:8200/ws/corpus",
+    "heartbeat_interval": 15,
+    "status": "ACTIVE",
+    "registered_at": "2024-05-01T08:01:00Z",
+    "last_seen": "2024-05-01T09:07:00Z",
+    "metadata": {
+      "team": "security",
+      "environment": "local",
+      "audit_engine": "v3"
+    }
+  }
+]
