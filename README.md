@@ -26,30 +26,6 @@ A coordination runtime that allows autonomous products to:
 
 ---
 
-## Status: v0.1.0 — All 14 Phases Complete ✓
-
-| Phase | Deliverable | Status |
-|---|---|---|
-| 0 | Schemas, contracts, validator, architecture docs | ✓ |
-| 1 | FastAPI daemon, product registry, signal router, SQLite | ✓ |
-| 2 | Service layer, DI container, EventBus, Python SDK | ✓ |
-| 3 | WebSocket real-time delivery, presence tracking, heartbeat | ✓ |
-| 4 | Checkpoint Interrupt Engine, clearance, audit log | ✓ |
-| 5 | Signal Gravity Engine (weighted risk scoring) | ✓ |
-| 6 | AI Translation Engine (Ollama + deterministic fallback) | ✓ |
-| 7 | Episodic Memory & Learning, pattern mining | ✓ |
-| 8 | Policy & Governance Engine (OBSERVER/ADVISOR/GUARDIAN) | ✓ |
-| 9 | Multi-Product Orchestration, synthesis engine | ✓ |
-| 10 | Guardian Mode — proactive intervention, adaptive thresholds | ✓ |
-| 11 | Observability Dashboard — read-only REST aggregation | ✓ |
-| 12 | Production hardening — auth, rate limiting, Docker, config | ✓ |
-| 13 | Real integration adapters — Anvil, Inspectra, Graphify, CI, Webhook | ✓ |
-| 14 | CLI, packaging, open-source release readiness | ✓ |
-
-**369 tests passing.**
-
----
-
 ## Quick Start
 
 ```bash
